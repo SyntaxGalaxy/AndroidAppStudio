@@ -92,8 +92,8 @@ android {
 
     defaultConfig {
         applicationId "com.icst.android.appstudio"
-        minSdk 21
-        targetSdk 34
+        minSdk 26
+        targetSdk 28
         versionCode 1
         versionName "1.0 Alpha01-Snapshot-" + getCommitHash()
         buildConfigField "String", "commitSha", getCommitSha()
@@ -164,6 +164,10 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.2.3')
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database")
+
+    // Gradle
+    implementation("org.gradle:gradle-tooling-api:7.1.1")
+    runtimeOnly("org.slf4j:slf4j-simple:1.7.10")
 
 	implementation("com.mindorks.android:prdownloader:0.6.0")
 

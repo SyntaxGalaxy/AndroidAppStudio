@@ -152,6 +152,7 @@ public class ModulesActivity extends BaseActivity {
     if (menuItem.getItemId() == R.id.run) {
       ProjectBuilderDialog buildDialog =
           new ProjectBuilderDialog(this, projectRootDirectory, module);
+      buildDialog.setCancelable(false);
       buildDialog.create().show();
     }
     return super.onOptionsItemSelected(menuItem);

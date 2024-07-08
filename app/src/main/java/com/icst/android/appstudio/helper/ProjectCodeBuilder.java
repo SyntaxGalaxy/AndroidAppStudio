@@ -33,6 +33,7 @@ package com.icst.android.appstudio.helper;
 
 import android.code.editor.common.utils.FileUtils;
 import com.icst.android.appstudio.block.model.FileModel;
+import com.icst.android.appstudio.exception.ProjectCodeBuildException;
 import com.icst.android.appstudio.listener.ProjectCodeBuildListener;
 import com.icst.android.appstudio.models.ModuleModel;
 import com.icst.android.appstudio.utils.EnvironmentUtils;
@@ -41,7 +42,14 @@ import com.icst.android.appstudio.utils.serialization.DeserializerUtils;
 import com.icst.android.appstudio.vieweditor.models.LayoutModel;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Pattern;
+import org.gradle.tooling.BuildLauncher;
+import org.gradle.tooling.GradleConnectionException;
+import org.gradle.tooling.GradleConnector;
+import org.gradle.tooling.ProjectConnection;
+import org.gradle.tooling.events.ProgressEvent;
+import org.gradle.tooling.events.ProgressListener;
 
 public final class ProjectCodeBuilder {
 
@@ -198,11 +206,97 @@ public final class ProjectCodeBuilder {
 
     // Yet be to done
 
+    // Gradle
+    setUpEnv();
+    File projectDir = new File("/storage/emulated/0/AndroidIDEProjects/AAS Extensions Installer");
+
+    ProjectConnection connection =
+        GradleConnector.newConnector()
+            .useGradleUserHomeDir(new File(System.getProperty("GRADLE_USER_HOME")))
+            .forProjectDirectory(projectDir)
+            .connect();
+
+    try {
+      BuildLauncher build = connection.newBuild();
+      build.forTasks("assembleDebug");
+      build.setEnvironmentVariables(setUpEnv());
+      build.addProgressListener(
+          new ProgressListener() {
+
+            @Override
+            public void statusChanged(ProgressEvent arg0) {
+              if (listener != null) {
+                listener.onBuildProgressLog(arg0.getDisplayName());
+              }
+            }
+          });
+      build.run();
+    } catch (GradleConnectionException e) {
+      if (listener != null) {
+        ProjectCodeBuildException exception = new ProjectCodeBuildException();
+        exception.setMessage(e.getMessage());
+        listener.onBuildFailed(exception);
+      }
+      e.printStackTrace();
+    } finally {
+      connection.close();
+    }
     long endExectionTime = System.currentTimeMillis();
     long executionTime = endExectionTime - executionStartTime;
     if (listener != null) {
       listener.onBuildComplete(executionTime);
     }
+  }
+
+  public static HashMap<String, String> setUpEnv() {
+    HashMap<String, String> environment = new HashMap<String, String>();
+    System.setProperty("HOME", "/data/data/com.icst.android.appstudio/files/home");
+    new File(System.getProperty("HOME")).mkdirs();
+    environment.put("HOME", "/data/data/com.icst.android.appstudio/files/home");
+
+    System.setProperty(
+        "ANDROID_HOME", "/data/data/com.icst.android.appstudio/files/home/android-sdk");
+    new File(System.getProperty("ANDROID_HOME")).mkdirs();
+    environment.put("ANDROID_HOME", "/data/data/com.icst.android.appstudio/files/home/android-sdk");
+
+    System.setProperty("JAVA_HOME", "/data/data/com.icst.android.appstudio/files/usr/opt/openjdk");
+    new File(System.getProperty("JAVA_HOME")).mkdirs();
+    environment.put("JAVA_HOME", "/data/data/com.icst.android.appstudio/files/usr/opt/openjdk");
+
+    System.setProperty(
+        "PATH",
+        "/data/data/com.icst.android.appstudio/files/usr/opt/openjdk/bin:"
+            .concat(System.getenv("PATH")));
+    environment.put(
+        "PATH",
+        "/data/data/com.icst.android.appstudio/files/usr/opt/openjdk/bin:"
+            .concat(System.getenv("PATH")));
+
+    System.setProperty(
+        "ANDROID_SDK_ROOT", "/data/data/com.icst.android.appstudio/files/home/android-sdk");
+    new File(System.getProperty("ANDROID_SDK_ROOT")).mkdirs();
+    environment.put(
+        "ANDROID_SDK_ROOT", "/data/data/com.icst.android.appstudio/files/home/android-sdk");
+
+    System.setProperty(
+        "ANDROID_USER_HOME", "/data/data/com.icst.android.appstudio/files/home/.android");
+    new File(System.getProperty("ANDROID_USER_HOME")).mkdirs();
+    environment.put(
+        "ANDROID_USER_HOME", "/data/data/com.icst.android.appstudio/files/home/.android");
+
+    System.setProperty(
+        "GRADLE_USER_HOME", "/data/data/com.icst.android.appstudio/files/home/.gradle");
+    new File(System.getProperty("GRADLE_USER_HOME")).mkdirs();
+    environment.put("GRADLE_USER_HOME", "/data/data/com.icst.android.appstudio/files/home/.gradle");
+
+    System.setProperty("SYSROOT", "/data/data/com.icst.android.appstudio/files/usr");
+    new File(System.getProperty("SYSROOT")).mkdirs();
+    environment.put("SYSROOT", "/data/data/com.icst.android.appstudio/files/usr");
+
+    System.setProperty("user.home", "/data/data/com.icst.android.appstudio/files/home");
+    environment.put("user.home", "/data/data/com.icst.android.appstudio/files/home");
+
+    return environment;
   }
 
   public static void generateLayoutResources(

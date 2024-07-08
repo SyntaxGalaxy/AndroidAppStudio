@@ -37,6 +37,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 import com.icst.android.appstudio.R;
+import com.icst.android.appstudio.utils.OpenJDKSetup;
 
 public class SplashActivity extends BaseActivity {
   @Override
@@ -44,6 +45,7 @@ public class SplashActivity extends BaseActivity {
     super.onCreate(bundle);
 
     setContentView(R.layout.activity_splash);
+	OpenJDKSetup.extractAndSetUpOpenJDK(this);
     new Handler(getMainLooper())
         .postDelayed(
             () -> {

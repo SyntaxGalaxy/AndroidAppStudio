@@ -83,12 +83,12 @@ public class ExtensionAdapter extends RecyclerView.Adapter<ExtensionAdapter.View
     StringBuilder details = new StringBuilder();
     if (extension.getIsInstalled()) {
       if (extension.getInstalledVersion() < extension.getLatestVersion()) {
-        details.append("Update");
+        details.append("Update from version ");
         details.append(String.valueOf(extension.getInstalledVersion()));
         details.append(" to ");
         details.append(String.valueOf(extension.getLatestVersion()));
       } else {
-        details.append("Installed ");
+        details.append("Installed Version: ");
         details.append(String.valueOf(extension.getInstalledVersion()));
       }
     } else {

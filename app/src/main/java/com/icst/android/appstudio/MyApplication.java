@@ -43,12 +43,12 @@ import android.util.Log;
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.elfilibustero.uidesigner.AppLoader;
-import com.quickersilver.themeengine.ThemeEngine;
-import com.quickersilver.themeengine.ThemeMode;
 import com.icst.android.appstudio.activities.CrashHandlerActivity;
 import com.icst.android.appstudio.models.SettingModel;
 import com.icst.android.appstudio.utils.EnvironmentUtils;
 import com.icst.android.appstudio.utils.SettingUtils;
+import com.quickersilver.themeengine.ThemeEngine;
+import com.quickersilver.themeengine.ThemeMode;
 
 public class MyApplication extends Application {
   // Social links
@@ -155,6 +155,7 @@ public class MyApplication extends Application {
 
     themeEngine.setDynamicTheme(settings.isEnabledDynamicTheme());
     ThemeEngine.applyToActivities(this);
+
     super.onCreate();
   }
 }
