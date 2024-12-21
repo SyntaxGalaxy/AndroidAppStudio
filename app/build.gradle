@@ -332,6 +332,14 @@ dependencies {
 	implementation project(":prdownloader")
 	implementation project(":themeEngine")
 	implementation project(":treeview")
+	api project(":tooling:api")
+	api project(":composite-builds:build-deps:java-compiler")
+	api project(":composite-builds:build-deps:javac")
+	api project(":composite-builds:build-deps:jaxp")
+	api project(":composite-builds:build-deps:jdk-compiler")
+	api project(":composite-builds:build-deps:jdk-jdeps")
+
+	compileOnly(":tooling:impl")
 }
 
 def shouldInstallExtension() {

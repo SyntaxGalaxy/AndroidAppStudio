@@ -1,0 +1,30 @@
+pluginManagement {
+	includeBuild('../build-logic')
+
+	repositories {
+		gradlePluginPortal()
+		google()
+		mavenCentral()
+		maven { url 'https://plugins.gradle.org/m2/' }
+	}
+}
+
+dependencyResolutionManagement {
+	repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+	repositories {
+		google()
+		mavenCentral()
+		jcenter()
+		maven { url 'https://jitpack.io' }
+		maven { url 'https://repo.gradle.org/gradle/libs-releases' }
+	}
+}
+
+include(
+		":javac",
+		":jaxp",
+		":java-compiler",
+		":jdk-compiler",
+		":jdk-jdeps",
+		":logback-core"
+		)

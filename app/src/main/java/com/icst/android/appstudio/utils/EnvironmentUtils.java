@@ -39,6 +39,7 @@ import java.util.Map;
 
 import com.icst.android.appstudio.BuildConfig;
 import com.icst.android.appstudio.models.ModuleModel;
+import com.itsaky.androidide.javac.config.JavacConfigProvider;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -128,6 +129,10 @@ public final class EnvironmentUtils {
 		grantFile(BUSYBOX);
 		grantFile(LOGIN_SHELL);
 		grantFile(SHELL);
+		System.setProperty("user.home", HOME.getAbsolutePath());
+		System.setProperty(
+				JavacConfigProvider.PROP_ANDROIDIDE_JAVA_HOME,
+				"/data/data/com.icst.android.appstudio/files/usr/lib/jvm/java-17-openjdk");
 	}
 
 	public static File mkdirIfNotExits(File in) {

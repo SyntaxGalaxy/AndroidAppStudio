@@ -2,7 +2,8 @@
 plugins {
 	id "com.android.application" version "8.6.0" apply false
 	id "com.android.library" version "8.6.0" apply false
-	id "org.jetbrains.kotlin.android" version "1.8.21" apply false
+	id "org.jetbrains.kotlin.android" version "1.9.24" apply false
+	id 'org.jetbrains.kotlin.jvm' version '1.9.24' apply false
 	id "com.google.gms.google-services" version "4.4.2" apply false
 	id "de.undercouch.download" version "5.6.0" apply false
 	id "org.jetbrains.dokka" version "1.9.20" apply false
@@ -16,11 +17,27 @@ ext {
 	blankj_utilcodex_version = "1.31.1"
 	gson_version = "2.8.7"
 	kotlin_version = "1.8.21"
+	jsonrpc = "0.22.0"
+	jkotlin = "1.9.24"
+	logback = "1.5.3"
+	slf4j = "2.0.12"
+	gradleTooling = "8.6"
+	googleAutoServiceAnnotations = "1.1.1"
+	xmlXercesImpl = "2.12.2"
+	xmlApis = "2.0.2"
+	googleAutoService = "1.1.1"
+	guava = "32.1.3-android"
+	androidxAnnotation = "1.7.1"
+	androidxCollection = "1.4.0"
+	xmlRemark = "1.2.0"
+	xmlResolver = "1.2"
+	jsoup = "1.17.2"
+	jsonrpc = "0.22.0"
 }
 
 spotless {
 	java {
-		target "*/src/*/java/**/*.java", "test/logiceditor/src/*/java/**/*.java"
+		target "*/src/*/java/**/*.java", "test/logiceditor/src/*/java/**/*.java", "tooling/api/src/*/java/**/*.java"
 		importOrder(
 				"java",
 				"javax",

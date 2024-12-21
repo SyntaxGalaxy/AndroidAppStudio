@@ -31,6 +31,7 @@
 
 package com.icst.android.appstudio;
 
+
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.elfilibustero.uidesigner.AppLoader;
@@ -78,7 +79,6 @@ public class MyApplication extends Application {
 		themeEngine = ThemeEngine.getInstance(this);
 		AppLoader.setContext(getApplicationContext());
 		EnvironmentUtils.init(this);
-
 		PRDownloaderConfig config = PRDownloaderConfig.newBuilder().setDatabaseEnabled(true).setConnectTimeout(30_000)
 				.build();
 

@@ -1,0 +1,16 @@
+plugins {
+    id 'java-library'
+}
+
+description = "AndroidIDE Logging Framework"
+
+dependencies {
+    compileOnly project(':utilities:frameworkStubs')
+
+    api ':composite-builds:build-deps:logback-core'
+    api('ch.qos.logback:logback-classic:$logback') {
+        exclude group: 'ch.qos.logback', module: 'logback-core'
+    }
+
+    implementation project(':utilities:buildInfo')
+}

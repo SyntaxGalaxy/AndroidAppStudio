@@ -30,6 +30,7 @@
  */
 
 pluginManagement {
+	includeBuild('composite-builds/build-logic')
 	repositories {
 		gradlePluginPortal()
 		google()
@@ -63,3 +64,24 @@ include(":treeview")
 include(":logiceditor")
 include(":beans")
 include(":test:logiceditor")
+include(":tooling:api")
+
+include(":composite-builds:build-deps:java-compiler")
+include(":composite-builds:build-deps:javac")
+include(":composite-builds:build-deps:jaxp")
+include(":composite-builds:build-deps:jdk-compiler")
+include(":composite-builds:build-deps:jdk-jdeps")
+include(":composite-builds:build-deps:logback-core")
+
+include(":tooling:api",
+":tooling:builder-model-impl",
+":tooling:events",
+":tooling:impl",
+":tooling:model",
+":logging:logger",
+":utilities:buildInfo",
+":utilities:lookup",
+":utilities:shared",
+":utilities:frameworkStubs",
+":xml:dom",
+":xml:lsp")

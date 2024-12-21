@@ -1,0 +1,73 @@
+/*
+ *  This file is part of AndroidIDE.
+ *
+ *  AndroidIDE is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  AndroidIDE is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with AndroidIDE.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+plugins {
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+    id "java-library"
+    id "org.jetbrains.kotlin.kapt"
+    id "org.jetbrains.kotlin.jvm"
+}
+
+tasks.withType(Jar) {
+    manifest {
+        attributes("Main-Class": "com.itsaky.androidide.tooling.impl.Main")
+    }
+}
+
+tasks.register("deleteExistingJarFiles") {
+    doLast {
+        delete project.layout.buildDirectory.dir("libs")
+    }
+}
+
+tasks.register("copyJar") {
+    doLast {
+        def libsDir = project.layout.buildDirectory.dir("libs")
+        copy {
+            from libsDir
+            into libsDir
+            include "*-all.jar"
+            rename { "tooling-api-all.jar" }
+        }
+    }
+}
+
+tasks.named("jar") {
+    dependsOn "deleteExistingJarFiles"
+    finalizedBy "shadowJar"
+}
+
+tasks.named("shadowJar") {
+    finalizedBy "copyJar"
+}
+
+dependencies {
+    kapt("com.google.auto.service:auto-service:$googleAutoService")
+
+    api(project(":tooling:api"))
+
+    implementation(project(":utilities:buildInfo"))
+	implementation(project(":utilities:shared"))
+
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$jkotlin")
+	implementation("com.google.auto.service:auto-service-annotations:$googleAutoServiceAnnotations")
+	implementation("xerces:xercesImpl:$xmlXercesImpl")
+	implementation("xml-apis:xml-apis:$xmlApis")
+    implementation("com.itsaky.androidide.gradle:gradle-tooling-api:$gradleTooling")
+
+    runtimeOnly("org.slf4j:slf4j-api:$slf4j")
+}
